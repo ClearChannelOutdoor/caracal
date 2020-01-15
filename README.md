@@ -718,6 +718,23 @@ end
 
 *Note: content of cells 21 and 24 will disappear*
 
+
+Rows can be marked as can't split rows that re-position themselves at the top of the next if they would have otherwise split across a page break.
+
+```
+docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
+  cant_split rows[1]
+end
+```
+
+or
+
+```
+docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
+  cant_split rows[1...-1]
+end
+```
+
 Table rows can be marked as header rows using the `header_rows` method which takes a number indicating how many rows from the top of the table should be marked as such. This has the effect of repeating these rows after each page break.
 
 ```ruby
