@@ -23,6 +23,7 @@ module Caracal
         const_set(:DEFAULT_TABLE_BORDER_SIZE,       0)          # units in 1/8 points
         const_set(:DEFAULT_TABLE_BORDER_SPACING,    0)          
         const_set(:DEFAULT_TABLE_CANT_SPLIT_ROWS,   {})
+        const_set(:DEFAULT_TABLE_HEADER_ROWS,       0)     
         
         # accessors
         attr_reader :table_align
@@ -37,6 +38,7 @@ module Caracal
         attr_reader :table_border_right       # returns border model
         attr_reader :table_border_horizontal  # returns border model
         attr_reader :table_border_vertical    # returns border model
+        attr_reader :table_header_rows
         
         # initialization
         def initialize(options={}, &block)
@@ -46,6 +48,7 @@ module Caracal
           @table_border_size    = DEFAULT_TABLE_BORDER_SIZE
           @table_border_spacing = DEFAULT_TABLE_BORDER_SPACING
           @table_rows_cant_split = {}
+          @table_header_rows    = DEFAULT_TABLE_HEADER_ROWS
           
           super options, &block
         end
@@ -148,7 +151,7 @@ module Caracal
         #=============== SETTERS ==============================
         
         # integers
-        [:border_size, :border_spacing, :width].each do |m|
+        [:border_size, :border_spacing, :header_rows, :width].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@table_#{ m }", value.to_i)
           end

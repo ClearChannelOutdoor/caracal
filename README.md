@@ -316,6 +316,32 @@ end
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
 
+### Footer
+
+A footer appearing on every page can be added via the `footer` method. Its block takes a footer object that supports text and table methods.
+
+_This is superceded by `page_numbers`, but can be used instead to provide a more complex page number footer._
+
+```ruby
+docx.footer do |footer|
+  footer.p do
+    text 'Pages '
+    field :page
+    text ' of '
+    field :numpages
+  end
+end
+```
+
+### Header
+
+A header appearing on every page can be added via the `header` method. Its block takes a header object that supports text and table methods.
+
+```ruby
+docx.header do |header|
+  header.p 'hello there'
+end
+```
 
 ### Fonts
 
@@ -432,6 +458,15 @@ docx.p do
 end
 ```
 
+PAGE and NUMPAGES fields can be added to runs using the `field` method
+
+```ruby
+docx.p do
+  text 'Pages '
+  field :page
+  text ' to '
+  field :numpages
+```
 
 ### Links
 
@@ -632,7 +667,7 @@ the simplest solution to both problems.*
 Release v1.4.0 deprecated the behaviour of automatically adding an empty paragraph tag after every table. If you are upgrading from an older version of the library, you will need to control such spacing in your own code.
 ```
 
-Tables can be added using the `table` method.  The method accepts several optional paramters to control the layout and style of the table cells.
+Tables can be added using the `table` method.  The method accepts several optional parameters to control the layout and style of the table cells.
 
 The `table` command accepts data in the form of a two-dimensional arrays. This corresponds to rows and column cells within those rows.  Each array item can be a string, a Hash of options, a Proc (which will be passed as a block), or a `TableCellModel`.  The command will normalize all array contents into a two-dimensional array of `TableCellModel` instances.
 
@@ -683,7 +718,8 @@ end
 
 *Note: content of cells 21 and 24 will disappear*
 
-Row can be marked as can't split rows that re-position themselves at the top of the next if they would have otherwise split across a page break.
+
+Rows can be marked as can't split rows that re-position themselves at the top of the next if they would have otherwise split across a page break.
 
 ```
 docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
@@ -696,6 +732,14 @@ or
 ```
 docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
   cant_split rows[1...-1]
+end
+```
+
+Table rows can be marked as header rows using the `header_rows` method which takes a number indicating how many rows from the top of the table should be marked as such. This has the effect of repeating these rows after each page break.
+
+```ruby
+docx.table [['Header 1', 'Header 2'],['Cell 1', 'Cell 2']] do
+  header_rows 1
 end
 ```
 
